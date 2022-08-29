@@ -13,6 +13,6 @@ class Community extends Model
         'user_id',
         'name',
         'description',
-        'slugs',
+        'slug',
     ];
 }
