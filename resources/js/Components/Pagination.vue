@@ -3,7 +3,12 @@ import { Link } from "@inertiajs/inertia-vue3";
 import { defineProps } from "vue";
 
 const props = defineProps({
-    links: [],
+    links: {
+        type: Array,
+        default() {
+            return []
+        }
+    },
 });
 </script>
 
