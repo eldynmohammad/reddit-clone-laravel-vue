@@ -1,18 +1,110 @@
 <script setup>
-import BreezeApplicationLogo from '@/Components/ApplicationLogo.vue';
-import { Link } from '@inertiajs/inertia-vue3';
+import BreezeApplicationLogo from "@/Components/ApplicationLogo.vue";
+import BreezeNavLink from "@/Components/NavLink.vue";
+import BreezeResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
+import { Link } from "@inertiajs/inertia-vue3";
+import { ref } from "vue";
+
+const showingNavigationDropdown = ref(false);
 </script>
 
 <template>
-    <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
-        <div>
-            <Link href="/">
-                <BreezeApplicationLogo class="w-20 h-20 fill-current text-gray-500" />
-            </Link>
-        </div>
+    <div>
+        <div class="min-h-screen bg-gray-100">
+            <nav class="bg-white border-b border-gray-100">
+                <!-- Primary Navigation Menu -->
+                <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+                    <div class="flex justify-between h-16">
+                        <div class="flex">
+                            <!-- Logo -->
+                            <div class="flex items-center shrink-0">
+                                <Link :href="route('dashboard')">
+                                <BreezeApplicationLogo class="block w-auto h-9" />
+                                </Link>
+                            </div>
 
-        <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
-            <slot />
+                            <!-- Navigation Links -->
+                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                                <BreezeNavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                                    Dashboard
+                                </BreezeNavLink>
+                                <BreezeNavLink :href="route('communities.index')" :active="
+                                    route().current('communities.index')
+                                ">
+                                    Communities
+                                </BreezeNavLink>
+                            </div>
+                        </div>
+
+                        <!-- Hamburger -->
+                        <div class="flex items-center -mr-2 sm:hidden">
+                            <button @click="
+                                showingNavigationDropdown =
+                                !showingNavigationDropdown
+                            "
+                                class="inline-flex items-center justify-center p-2 text-gray-400 transition duration-150 ease-in-out rounded-md hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500">
+                                <svg class="w-6 h-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                                    <path :class="{
+                                        hidden: showingNavigationDropdown,
+                                        'inline-flex':
+                                            !showingNavigationDropdown,
+                                    }" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 6h16M4 12h16M4 18h16" />
+                                    <path :class="{
+                                        hidden: !showingNavigationDropdown,
+                                        'inline-flex':
+                                            showingNavigationDropdown,
+                                    }" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Responsive Navigation Menu -->
+                <div :class="{
+                    block: showingNavigationDropdown,
+                    hidden: !showingNavigationDropdown,
+                }" class="sm:hidden">
+                    <div class="pt-2 pb-3 space-y-1">
+                        <BreezeResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                            Dashboard
+                        </BreezeResponsiveNavLink>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Page Heading -->
+            <header class="bg-white shadow" v-if="$slots.header">
+                <div class="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
+                    <slot name="header" />
+                </div>
+            </header>
+
+            <!-- Page Content -->
+            <main class="px-4 mx-auto mt-6 sm:px-6 lg:px-8 max-w-7xl">
+                <slot />
+            </main>
         </div>
     </div>
 </template>
+
+<style>
+.toast-enter-from,
+.toast-leave-to {
+    opacity: 0;
+    transform: translateY(-15rem);
+}
+
+.toast-enter-to,
+.toast-leave-from {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.toast-enter-active,
+.toast-leave-active {
+    transition: all 0.3s ease-in-out;
+}
+</style>

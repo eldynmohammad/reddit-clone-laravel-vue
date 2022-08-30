@@ -38,6 +38,7 @@ const submit = () => {
 </script>
 
 <template>
+
     <Head title="Create Community" />
 
     <BreezeAuthenticatedLayout>
@@ -53,62 +54,29 @@ const submit = () => {
                     <form @submit.prevent="submit">
                         <div>
                             <BreezeLabel for="name" value="Name" />
-                            <BreezeInput
-                                id="name"
-                                type="text"
-                                class="mt-1 block w-full"
-                                v-model="form.name"
-                                autofocus
-                                autocomplete="name"
-                            />
-                            <BreezeInputError
-                                class="mt-2"
-                                :message="form.errors.name"
-                            />
+                            <BreezeInput id="name" type="text" class="mt-1 block w-full" v-model="form.name" autofocus
+                                autocomplete="name" />
+                            <BreezeInputError class="mt-2" :message="form.errors.name" />
                         </div>
 
                         <div class="mt-4">
                             <BreezeLabel for="slug" value="Slug" />
-                            <BreezeInput
-                                id="slug"
-                                type="text"
-                                class="mt-1 block w-full bg-slate-100"
-                                v-model="form.slug"
-                                autocomplete="slug"
-                                readonly
-                                disabled
-                            />
-                            <BreezeInputError
-                                class="mt-2"
-                                :message="form.errors.slug"
-                            />
+                            <BreezeInput id="slug" type="text" class="mt-1 block w-full bg-slate-100"
+                                v-model="form.slug" autocomplete="slug" readonly disabled />
+                            <BreezeInputError class="mt-2" :message="form.errors.slug" />
                         </div>
 
                         <div class="mt-4">
-                            <BreezeLabel
-                                for="description"
-                                value="Description"
-                            />
-                            <BreezeInput
-                                id="description"
-                                type="text"
-                                class="mt-1 block w-full"
-                                v-model="form.description"
-                                autocomplete="description"
-                            />
-                            <BreezeInputError
-                                class="mt-2"
-                                :message="form.errors.description"
-                            />
+                            <BreezeLabel for="description" value="Description" />
+                            <BreezeInput id="description" type="text" class="mt-1 block w-full"
+                                v-model="form.description" autocomplete="description" />
+                            <BreezeInputError class="mt-2" :message="form.errors.description" />
                         </div>
 
                         <div class="flex items-center justify-end mt-4">
-                            <BreezeButton
-                                class="ml-4"
-                                :class="{ 'opacity-25': form.processing }"
-                                :disabled="form.processing"
-                            >
-                                Register
+                            <BreezeButton class="ml-4" :class="{ 'opacity-25': form.processing }"
+                                :disabled="form.processing">
+                                Update
                             </BreezeButton>
                         </div>
                     </form>
