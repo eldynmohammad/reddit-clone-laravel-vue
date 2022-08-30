@@ -13,7 +13,11 @@ class CommunityController extends Controller
     public function index()
     {
         return Inertia::render('Communities/Index', [
-            'communities' => Community::all()
+            'communities' => Community::paginate(5)->through(fn ($community) => [
+                'id' => $community->id,
+                'name' => $community->name,
+                'slug' => $community->slug
+            ])
         ]);
     }
 
@@ -26,7 +30,7 @@ class CommunityController extends Controller
     {
         Community::create($request->validated() + ['user_id' => auth()->id()]);
 
-        return redirect()->route('communities.index');
+        return redirect()->route('communities.index')->with('message', 'Community created succesfully!');
     }
 
     public function show($id)
@@ -45,11 +49,13 @@ class CommunityController extends Controller
     {
         $community->update($request->validated());
 
-        return redirect()->route('communities.index');
+        return redirect()->route('communities.index')->with('message', 'Community updated succesfully!');
     }
 
-    public function destroy($id)
+    public function destroy(Community $community)
     {
-        //
+        $community->delete();
+
+        return redirect()->route('communities.index')->with('message', 'Community deleted succesfully!');
     }
 }

@@ -1,17 +1,69 @@
 <script setup>
-import { ref } from "vue";
 import BreezeApplicationLogo from "@/Components/ApplicationLogo.vue";
 import BreezeDropdown from "@/Components/Dropdown.vue";
 import BreezeDropdownLink from "@/Components/DropdownLink.vue";
 import BreezeNavLink from "@/Components/NavLink.vue";
 import BreezeResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
-import { Link } from "@inertiajs/inertia-vue3";
+import { XMarkIcon } from "@heroicons/vue//24/outline";
+import { Link, usePage } from "@inertiajs/inertia-vue3";
+import { ref, watch } from "vue";
 
 const showingNavigationDropdown = ref(false);
+
+const flashIsShowing = ref(false);
+
+watch(
+    () => usePage().props.value.flash,
+    (flash) => {
+        if (flash.message) {
+            flashIsShowing.value = true;
+            setTimeout(function () {
+                flashIsShowing.value = false;
+            }, 5000);
+        }
+    }
+);
+
+if (usePage().props.value.flash.message) {
+    flashIsShowing.value = true;
+    setTimeout(function () {
+        flashIsShowing.value = false;
+    }, 5000);
+}
+
+function removeFlash() {
+    flashIsShowing.value = false;
+}
 </script>
 
 <template>
-    <div>
+    <div class="main-layout">
+        <transition name="toast">
+            <div v-if="flashIsShowing" class="bg-emerald-400">
+                <div class="max-w-7xl mx-auto py-3 px-3 sm:px-6 lg:px-8">
+                    <div class="flex items-center justify-between flex-wrap">
+                        <div
+                            class="w-0 flex-1 flex items-center justify-between px-3"
+                        >
+                            <p class="font-medium text-white truncate">
+                                <span class="md:hidden">{{
+                                    $page.props.flash.message
+                                }}</span>
+                                <span class="hidden md:inline">{{
+                                    $page.props.flash.message
+                                }}</span>
+                            </p>
+                            <button
+                                class="p-2 bg-white/20 rounded-md hover:bg-gray-900/20"
+                                @click="removeFlash"
+                            >
+                                <XMarkIcon class="w-4 h-4 text-white" />
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </transition>
         <div class="min-h-screen bg-gray-100">
             <nav class="bg-white border-b border-gray-100">
                 <!-- Primary Navigation Menu -->
@@ -187,3 +239,22 @@ const showingNavigationDropdown = ref(false);
         </div>
     </div>
 </template>
+
+<style>
+.toast-enter-from,
+.toast-leave-to {
+    opacity: 0;
+    transform: translateY(-15rem);
+}
+
+.toast-enter-to,
+.toast-leave-from {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.toast-enter-active,
+.toast-leave-active {
+    transition: all 0.3s ease-in-out;
+}
+</style>
