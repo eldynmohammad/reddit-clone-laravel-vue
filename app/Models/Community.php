@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Community extends Model
 {
     use HasFactory;
+    // Sluggable: https://github.com/cviebrock/eloquent-sluggable
 
     protected $fillable = [
         'user_id',

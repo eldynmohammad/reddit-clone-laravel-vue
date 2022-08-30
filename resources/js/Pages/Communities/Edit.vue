@@ -7,27 +7,30 @@ import BreezeAuthenticatedLayout from "@/Layouts/Authenticated.vue";
 import { Head, useForm } from "@inertiajs/inertia-vue3";
 import { watch } from "vue";
 
-const form = useForm({
-    name: "",
-    description: "",
-    slug: "",
+const props = defineProps({
+    community: {
+        type: Object,
+        default() {
+            return {}
+        }
+    }
 });
 
-watch(
-    () => form.name,
-    (val) => {
-        console.log(val);
-        form.slug = val
-            .toLowerCase()
-            .trim()
-            .replace(/[^\w\s-]/g, "")
-            .replace(/[\s_-]+/g, "-")
-            .replace(/^-+|-+$/g, "");
+const form = useForm(props.community);
+
+watch(() => form.name, (val) => {
+    console.log(val);
+    form.slug = val
+        .toLowerCase()
+        .trim()
+        .replace(/[^\w\s-]/g, "")
+        .replace(/[\s_-]+/g, "-")
+        .replace(/^-+|-+$/g, "");
     }
 );
 
 const submit = () => {
-    form.post(route("communities.store"));
+    form.patch(route("communities.update", form.id));
     // form.post(route('communities.store'), {
     //     onFinish: () => form.reset('name', 'description', 'slug'),
     // });
