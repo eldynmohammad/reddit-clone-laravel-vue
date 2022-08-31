@@ -16,4 +16,14 @@ class Community extends Model
         'description',
         'slug',
     ];
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
 }
