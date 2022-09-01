@@ -20,6 +20,7 @@
         "vue": "^3.2.31"
     },
     "dependencies": {
-        "@heroicons/vue": "^2.0.8"
+        "@heroicons/vue": "^2.0.10",
+        "sweetalert": "^2.1.2"
     }
 }
