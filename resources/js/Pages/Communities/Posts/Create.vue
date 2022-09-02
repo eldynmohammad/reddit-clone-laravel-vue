@@ -33,32 +33,32 @@ const submit = () => {
 
     <BreezeAuthenticatedLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            <h2 class="text-xl font-semibold leading-tight text-gray-800">
                 Create Post for {{ props.community.name }}
             </h2>
         </template>
 
         <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="max-w-md mx-auto bg-white p-4 rounded-lg">
+            <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+                <div class="max-w-md p-4 mx-auto bg-white rounded-lg">
                     <form @submit.prevent="submit">
                         <div>
                             <BreezeLabel for="title" value="Title" />
-                            <BreezeInput id="title" type="text" class="mt-1 block w-full" v-model="form.title" autofocus
+                            <BreezeInput id="title" type="text" class="block w-full mt-1" v-model="form.title" autofocus
                                 autocomplete="title" />
                             <BreezeInputError class="mt-2" :message="form.errors.title" />
                         </div>
 
                         <div class="mt-4">
                             <BreezeLabel for="url" value="Url" />
-                            <BreezeInput id="url" type="text" class="mt-1 block w-full"
-                                v-model="form.url" autocomplete="url"/>
+                            <BreezeInput id="url" type="text" class="block w-full mt-1" v-model="form.url"
+                                autocomplete="url" />
                             <BreezeInputError class="mt-2" :message="form.errors.url" />
                         </div>
 
                         <div class="mt-4">
                             <BreezeLabel for="description" value="Description" />
-                            <BreezeInput id="description" type="text" class="mt-1 block w-full"
+                            <BreezeInput id="description" type="text" class="block w-full mt-1"
                                 v-model="form.description" autocomplete="description" />
                             <BreezeInputError class="mt-2" :message="form.errors.description" />
                         </div>
