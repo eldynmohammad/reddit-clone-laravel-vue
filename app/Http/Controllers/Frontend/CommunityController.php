@@ -12,7 +12,7 @@ class CommunityController extends Controller
 {
     public function show($slug)
     {
-        $community = Community::where('slug', $slug)->first();
+        $community = Community::where('slug', $slug)->firstOrFail();
 
         return Inertia::render('Frontend/Communities/Show', [
             'community' => $community,

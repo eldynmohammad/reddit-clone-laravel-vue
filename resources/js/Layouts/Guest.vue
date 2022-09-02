@@ -27,13 +27,13 @@ const showingNavigationDropdown = ref(false);
 
                         <div class="hidden sm:flex sm:items-center sm:ml-6">
                             <!-- Settings Dropdown -->
-                            <div class="ml-3 relative">
+                            <div class="ml-3 relative" v-if="$page.props.auth.is_loggedin">
                                 <BreezeDropdown align="right" width="48">
                                     <template #trigger>
                                         <span class="inline-flex rounded-md">
                                             <button type="button"
                                                 class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                                                {{ $page.props.auth.user?.name }}
+                                                {{ $page.props.auth.user.name }}
 
                                                 <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg"
                                                     viewBox="0 0 20 20" fill="currentColor">
@@ -55,6 +55,15 @@ const showingNavigationDropdown = ref(false);
                                     </template>
                                 </BreezeDropdown>
                             </div>
+                            <template v-else>
+                                <Link :href="route('login')" class="text-sm text-gray-700 dark:text-gray-500 underline">
+                                Log in
+                                </Link>
+
+                                <Link :href="route('register')"
+                                    class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">Register
+                                </Link>
+                            </template>
                         </div>
 
                         <!-- Hamburger -->
