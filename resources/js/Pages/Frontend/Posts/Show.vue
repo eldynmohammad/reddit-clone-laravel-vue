@@ -2,7 +2,7 @@
 import BreezeGuestLayout from "@/Layouts/Guest.vue";
 import { ArrowSmallLeftIcon, PencilIcon, TrashIcon } from "@heroicons/vue/24/solid";
 import { Inertia } from "@inertiajs/inertia";
-import { Link } from "@inertiajs/inertia-vue3";
+import { Link, useForm } from "@inertiajs/inertia-vue3";
 import swal from 'sweetalert';
 import { defineProps } from "vue";
 
@@ -21,6 +21,10 @@ const props = defineProps({
     }
 });
 
+const form = useForm({
+    content: ''
+});
+
 // const isDeleteOpen = ref(false);
 
 function openDeleteModal() {
@@ -37,6 +41,12 @@ function openDeleteModal() {
             case "destroy":
                 Inertia.delete(route('communities.posts.destroy', [ props.community.slug, props.post.data.slug ]));
         }
+    });
+}
+
+const submitComment = () => {
+    form.post(route('frontend.posts.comments', [ props.community.slug, props.post.data.slug ]), {
+        onSuccess: () => form.reset('content')
     });
 }
 </script>
@@ -61,8 +71,8 @@ function openDeleteModal() {
                 <ArrowSmallLeftIcon class="w-5 h-5 text-gray-900" />
                 <span class="ml-4">r/{{ props.community.name }}</span>
                 </Link>
-                <div class="p-4 mt-4 bg-white rounded-lg">
-                    <div class="flex justify-between items-center">
+                <div class="mt-4 bg-white rounded-lg">
+                    <div class="p-4 flex justify-between items-center">
                         <div class="text-xs opacity-50 flex flex-col md:flex-row gap-1">
                             <span>Posted by</span>
                             <span class="font-semibold max-w-[12rem] break-words">u/{{ post.data.username}}</span>
@@ -77,18 +87,45 @@ function openDeleteModal() {
                                 @click="openDeleteModal">
                                 <TrashIcon class="w-3.5 h-3.5" />
                             </button>
-                            <!-- <Link :href="route('communities.posts.destroy', [ community.slug, post.data.slug ])"
-                                class="p-1.5 bg-pink-500 text-white rounded-md hover:bg-pink-600">
-                            <TrashIcon class="w-3.5 h-3.5" />
-                            </Link> -->
                         </div>
                     </div>
-                    <h1 class="mt-4 text-xl font-semibold">{{ post.data.title }}</h1>
-                    <p class="mt-1">{{ post.data.description }}</p>
-                    <a :href="post.data.url"
-                        class="text-xs break-words font-semibold text-indigo-500 hover:text-indigo-300">
-                        {{ post.data.url }}
-                    </a>
+                    <div class="divide-y-4">
+                        <div class="p-4">
+                            <h1 class="text-xl font-semibold">{{ post.data.title }}</h1>
+                            <p class="mt-1">{{ post.data.description }}</p>
+                            <a :href="post.data.url"
+                                class="text-xs break-words font-semibold text-indigo-500 hover:text-indigo-300">
+                                {{ post.data.url }}
+                            </a>
+                        </div>
+                        <div v-if="$page.props.auth.is_loggedin" class="p-4">
+                            <form @submit.prevent="submitComment">
+                                <div class="mt-2">
+                                    <!-- <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Your
+                                    comment</label> -->
+                                    <textarea rows="4" v-model="form.content" placeholder="What are your thoughts?"
+                                        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300"></textarea>
+                                </div>
+                                <div class="mt-2 flex justify-end">
+                                    <button
+                                        class="px-4 py-2 bg-indigo-500 hover:bg-indigo-700 text-white rounded-md text-sm">Comment</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div>
+                            <h3 class="text-lg px-4 py-2">Comments</h3>
+                            <ul role="list" class="divide-y divide-gray-200 px-4">
+                                <li v-for="(comment, index) in props.post.data.comments" :key="index"
+                                    class="py-4 flex flex-col">
+                                    <div class="text-xs">
+                                        <span class="opacity-60">Commented by</span>
+                                        <span class="font-semibold ml-1">{{ comment.username }}</span>
+                                    </div>
+                                    <p class="mt-4 text-sm">{{ comment.content }}</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="flex-1">
