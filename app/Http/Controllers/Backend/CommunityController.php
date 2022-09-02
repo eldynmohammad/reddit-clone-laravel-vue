@@ -14,7 +14,7 @@ class CommunityController extends Controller
     public function index()
     {
         return Inertia::render('Communities/Index', [
-            'communities' => Community::paginate(5)->through(fn ($community) => [
+            'communities' => Community::where('user_id', auth()->id())->paginate(5)->through(fn ($community) => [
                 'id' => $community->id,
                 'user_id' => $community->user_id,
                 'owner' => auth()->id() === $community->user_id ? true : false,
@@ -43,14 +43,13 @@ class CommunityController extends Controller
 
     public function edit(Community $community)
     {
-        return Inertia::render('Communities/Edit', [
-            'community' => $community
-        ]);
+        $this->authorize('update', $community);
+        return Inertia::render('Communities/Edit', compact('community'));
     }
 
     public function update(UpdateCommunityRequest $request, Community $community)
     {
-        // dd($community);
+        $this->authorize('update', $community);
         $community->update($request->validated());
 
         return redirect()->route('communities.index')->with('message', 'Community updated succesfully!');
@@ -58,6 +57,7 @@ class CommunityController extends Controller
 
     public function destroy(Community $community)
     {
+        $this->authorize('delete', $community);
         $community->delete();
 
         return redirect()->route('communities.index')->with('message', 'Community deleted succesfully!');

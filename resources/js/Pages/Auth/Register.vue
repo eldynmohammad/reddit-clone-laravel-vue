@@ -27,7 +27,7 @@ const submit = () => {
 
         <Head title="Register" />
 
-        <div class="max-w-md p-4 mx-auto mt-12 bg-white rounded-lg">
+        <div class="max-w-md p-6 mx-auto mt-8 bg-white rounded-lg">
 
             <h1 class="text-4xl font-bold mb-4">Register</h1>
 

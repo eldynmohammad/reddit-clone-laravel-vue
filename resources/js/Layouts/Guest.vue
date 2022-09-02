@@ -19,7 +19,7 @@ const showingNavigationDropdown = ref(false);
                         <div class="flex">
                             <!-- Logo -->
                             <div class="flex items-center shrink-0">
-                                <Link href="/">
+                                <Link :href="route('communities.index')">
                                 <BreezeApplicationLogo class="block w-auto h-9" />
                                 </Link>
                             </div>

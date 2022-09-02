@@ -30,7 +30,7 @@ const submit = () => {
 
         <Head title="Log in" />
 
-        <div class="max-w-md p-4 mx-auto mt-12 bg-white rounded-lg">
+        <div class="max-w-md p-6 mx-auto mt-8 bg-white rounded-lg">
             <div v-if="status" class="mb-4 text-sm font-medium text-green-600">
                 {{ status }}
             </div>
