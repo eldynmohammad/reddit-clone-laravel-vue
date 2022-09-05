@@ -39,7 +39,7 @@ const props = defineProps({
         <div class="flex flex-col lg:flex-row gap-6">
             <div class="space-y-4 lg:w-8/12">
                 <PostCard v-for="(post, index) in props.posts.data" :key="index" :post="post"
-                    :community="props.community" />
+                    :community="props.community.slug" />
             </div>
             <div class="flex-1">
                 <div class="rounded-lg bg-white overflow-hidden">
