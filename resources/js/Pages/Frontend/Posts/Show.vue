@@ -1,4 +1,5 @@
 <script setup>
+import PostVote from "@/Components/PostVote.vue";
 import BreezeGuestLayout from "@/Layouts/Guest.vue";
 import { ArrowSmallLeftIcon, PencilIcon, TrashIcon } from "@heroicons/vue/24/solid";
 import { Inertia } from "@inertiajs/inertia";
@@ -53,17 +54,6 @@ const submitComment = () => {
 
 <template>
     <BreezeGuestLayout>
-        <!-- <template #header>
-            <div class="flex items-center justify-between px-2">
-                <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                    r/{{ props.community.name }}
-                </h2>
-                <Link v-if="$page.props.auth.is_loggedin"
-                    :href="route('communities.posts.create', props.community.slug)"
-                    class="px-3.5 py-3 rounded-md text-sm font-semibold bg-indigo-500 text-white">Create Post</Link>
-            </div>
-        </template> -->
-
         <div class="flex flex-col gap-6 lg:flex-row">
             <div class="w-full lg:w-8/12">
                 <Link :href="route('frontend.communities.show', props.community.slug)"
@@ -71,59 +61,63 @@ const submitComment = () => {
                 <ArrowSmallLeftIcon class="w-5 h-5 text-gray-900" />
                 <span class="ml-4">r/{{ props.community.name }}</span>
                 </Link>
-                <div class="mt-4 bg-white rounded-lg">
-                    <div class="p-4 flex justify-between items-center">
-                        <div class="text-xs opacity-50 flex flex-col md:flex-row gap-1">
-                            <span>Posted by</span>
-                            <span class="font-semibold max-w-[12rem] break-words">u/{{ post.data.username}}</span>
+                <div class="mt-4 flex bg-white rounded-lg p-4">
+                    <PostVote :post="props.post.data" />
+                    <div class="flex-1">
+                        <div class=" ml-4 flex justify-between items-center">
+                            <div class="text-xs opacity-50 flex flex-col md:flex-row gap-1">
+                                <span>Posted by</span>
+                                <span class="font-semibold max-w-[12rem] break-words">u/{{ post.data.username}}</span>
+                            </div>
+                            <div v-if="$page.props.auth.is_loggedin && post.data.owner"
+                                class=" flex items-center gap-2">
+                                <Link
+                                    :href="route('communities.posts.edit', [ props.community.slug, props.post.data.slug ])"
+                                    class="p-1.5 border rounded-md hover:bg-gray-100">
+                                <PencilIcon class="w-3.5 h-3.5" />
+                                </Link>
+                                <button type="button" class="p-1.5 bg-pink-500 text-white rounded-md hover:bg-pink-600"
+                                    @click="openDeleteModal">
+                                    <TrashIcon class="w-3.5 h-3.5" />
+                                </button>
+                            </div>
                         </div>
-                        <div v-if="$page.props.auth.is_loggedin && post.data.owner" class=" flex items-center gap-2">
-                            <Link
-                                :href="route('communities.posts.edit', [ props.community.slug, props.post.data.slug ])"
-                                class="p-1.5 border rounded-md hover:bg-gray-100">
-                            <PencilIcon class="w-3.5 h-3.5" />
-                            </Link>
-                            <button type="button" class="p-1.5 bg-pink-500 text-white rounded-md hover:bg-pink-600"
-                                @click="openDeleteModal">
-                                <TrashIcon class="w-3.5 h-3.5" />
-                            </button>
-                        </div>
-                    </div>
-                    <div class="divide-y-4">
-                        <div class="p-4">
-                            <h1 class="text-xl font-semibold">{{ post.data.title }}</h1>
-                            <p class="mt-1">{{ post.data.description }}</p>
-                            <a :href="post.data.url"
-                                class="text-xs break-words font-semibold text-indigo-500 hover:text-indigo-300">
-                                {{ post.data.url }}
-                            </a>
-                        </div>
-                        <div v-if="$page.props.auth.is_loggedin" class="p-4">
-                            <form @submit.prevent="submitComment">
-                                <div class="mt-2">
-                                    <!-- <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Your
+                        <div class="divide-y-4">
+                            <div class="p-4">
+                                <h1 class="text-xl font-semibold">{{ post.data.title }}</h1>
+                                <p class="mt-1">{{ post.data.description }}</p>
+                                <a :href="post.data.url"
+                                    class="text-xs break-words font-semibold text-indigo-500 hover:text-indigo-300">
+                                    {{ post.data.url }}
+                                </a>
+                            </div>
+                            <div v-if="$page.props.auth.is_loggedin" class="p-4">
+                                <form @submit.prevent="submitComment">
+                                    <div class="mt-2">
+                                        <!-- <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Your
                                     comment</label> -->
-                                    <textarea rows="4" v-model="form.content" placeholder="What are your thoughts?"
-                                        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300"></textarea>
-                                </div>
-                                <div class="mt-2 flex justify-end">
-                                    <button
-                                        class="px-4 py-2 bg-indigo-500 hover:bg-indigo-700 text-white rounded-md text-sm">Comment</button>
-                                </div>
-                            </form>
-                        </div>
-                        <div>
-                            <h3 class="text-lg px-4 py-2">Comments</h3>
-                            <ul role="list" class="divide-y divide-gray-200 px-4">
-                                <li v-for="(comment, index) in props.post.data.comments" :key="index"
-                                    class="py-4 flex flex-col">
-                                    <div class="text-xs">
-                                        <span class="opacity-60">Commented by</span>
-                                        <span class="font-semibold ml-1">{{ comment.username }}</span>
+                                        <textarea rows="4" v-model="form.content" placeholder="What are your thoughts?"
+                                            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300"></textarea>
                                     </div>
-                                    <p class="mt-4 text-sm">{{ comment.content }}</p>
-                                </li>
-                            </ul>
+                                    <div class="mt-2 flex justify-end">
+                                        <button
+                                            class="px-4 py-2 bg-indigo-500 hover:bg-indigo-700 text-white rounded-md text-sm">Comment</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div>
+                                <h3 class="text-lg px-4 py-2">Comments</h3>
+                                <ul role="list" class="divide-y divide-gray-200 px-4">
+                                    <li v-for="(comment, index) in props.post.data.comments" :key="index"
+                                        class="py-4 flex flex-col">
+                                        <div class="text-xs">
+                                            <span class="opacity-60">Commented by</span>
+                                            <span class="font-semibold ml-1">{{ comment.username }}</span>
+                                        </div>
+                                        <p class="mt-4 text-sm">{{ comment.content }}</p>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
