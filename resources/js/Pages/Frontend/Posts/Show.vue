@@ -61,10 +61,10 @@ const submitComment = () => {
                 <ArrowSmallLeftIcon class="w-5 h-5 text-gray-900" />
                 <span class="ml-4">r/{{ props.community.name }}</span>
                 </Link>
-                <div class="mt-4 flex bg-white rounded-lg p-4">
-                    <PostVote :post="props.post.data" />
+                <div class="mt-4 flex bg-white rounded-lg overflow-hidden">
+                    <PostVote :post="props.post.data" class="hidden md:flex bg-gray-200 p-2.5" />
                     <div class="flex-1">
-                        <div class=" ml-4 flex justify-between items-center">
+                        <div class="mt-4 px-3 flex justify-between items-center">
                             <div class="text-xs opacity-50 flex flex-col md:flex-row gap-1">
                                 <span>Posted by</span>
                                 <span class="font-semibold max-w-[12rem] break-words">u/{{ post.data.username}}</span>
@@ -82,14 +82,17 @@ const submitComment = () => {
                                 </button>
                             </div>
                         </div>
-                        <div class="divide-y-4">
-                            <div class="p-4">
+                        <div class="divide-y-2">
+                            <div class="p-3">
                                 <h1 class="text-xl font-semibold">{{ post.data.title }}</h1>
                                 <p class="mt-1">{{ post.data.description }}</p>
                                 <a :href="post.data.url"
                                     class="text-xs break-words font-semibold text-indigo-500 hover:text-indigo-300">
                                     {{ post.data.url }}
                                 </a>
+                                <div class="mt-4 md:hidden">
+                                    <PostVote :post="props.post.data" />
+                                </div>
                             </div>
                             <div v-if="$page.props.auth.is_loggedin" class="p-4">
                                 <form @submit.prevent="submitComment">
@@ -105,8 +108,8 @@ const submitComment = () => {
                                     </div>
                                 </form>
                             </div>
-                            <div>
-                                <h3 class="text-lg px-4 py-2">Comments</h3>
+                            <div v-if="props.post.data.comments.length">
+                                <h3 class="text-lg px-4 py-3">Comments</h3>
                                 <ul role="list" class="divide-y divide-gray-200 px-4">
                                     <li v-for="(comment, index) in props.post.data.comments" :key="index"
                                         class="py-4 flex flex-col">
