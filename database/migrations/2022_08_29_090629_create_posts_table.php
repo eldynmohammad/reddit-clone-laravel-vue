@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('url')->nullable();
             $table->string('slug')->unique();
             $table->text('description')->nullable();
+            $table->integer('votes')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });

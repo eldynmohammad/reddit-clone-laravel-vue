@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Backend\CommunityController;
 use App\Http\Controllers\Backend\CommunityPostController;
+use App\Http\Controllers\Backend\PostVoteController;
 use App\Http\Controllers\Frontend\CommunityController as FrontendCommunityController;
 use App\Http\Controllers\Frontend\PostCommentController;
 use App\Http\Controllers\Frontend\PostController;
@@ -25,6 +26,9 @@ Route::post('/r/{community_slug}/posts/{post:slug}/comments', [PostCommentContro
 Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::resource('/communities', CommunityController::class);
     Route::resource('/communities.posts', CommunityPostController::class);
+
+    Route::post('/posts/{post:slug}/upvote', [PostVoteController::class, 'upvote'])->name('posts.upvote');
+    Route::post('/posts/{post:slug}/downvote', [PostVoteController::class, 'downvote'])->name('posts.downvote');
 });
 
 require __DIR__.'/auth.php';

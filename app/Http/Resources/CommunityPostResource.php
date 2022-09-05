@@ -14,6 +14,9 @@ class CommunityPostResource extends JsonResource
             'description' => $this->description,
             'username' => $this->user->username,
             'slug' => $this->slug,
+            'votes' => $this->votes,
+            'postVotes' => $this->whenLoaded('postVotes'),
+            'comments' => CommentResource::collection($this->whenLoaded('comments'))
         ];
     }
 }
