@@ -26,7 +26,13 @@ const props = defineProps({
         default() {
             return {}
         }
-    }
+    },
+    can_update: {
+        type: Boolean
+    },
+    can_delete: {
+        type: Boolean
+    },
 });
 
 const form = useForm({
@@ -76,15 +82,14 @@ const submitComment = () => {
                                 <span>Posted by</span>
                                 <span class="font-semibold max-w-[12rem] break-words">u/{{ post.data.username}}</span>
                             </div>
-                            <div v-if="$page.props.auth.is_loggedin && post.data.owner"
-                                class=" flex items-center gap-2">
-                                <Link
+                            <div v-if="$page.props.auth.is_loggedin" class=" flex items-center gap-2">
+                                <Link v-if="props.can_update"
                                     :href="route('communities.posts.edit', [ props.community.slug, props.post.data.slug ])"
                                     class="p-1.5 border rounded-md hover:bg-gray-100">
                                 <PencilIcon class="w-3.5 h-3.5" />
                                 </Link>
                                 <button type="button" class="p-1.5 bg-pink-500 text-white rounded-md hover:bg-pink-600"
-                                    @click="openDeleteModal">
+                                    v-if="props.can_delete" @click="openDeleteModal">
                                     <TrashIcon class="w-3.5 h-3.5" />
                                 </button>
                             </div>

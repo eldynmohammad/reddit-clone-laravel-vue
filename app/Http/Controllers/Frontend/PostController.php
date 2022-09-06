@@ -30,12 +30,17 @@ class PostController extends Controller
     public function show($community_slug, $slug)
     {
         $community = Community::where('slug', $community_slug)->first();
-        $post = new PostShowResource(Post::with(['user', 'comments', 'postVotes' => function ($query) {
+        $community_post = Post::with(['user', 'comments', 'postVotes' => function ($query) {
             $query->where('user_id', auth()->id());
-        }])->where('slug', $slug)->first());
+        }])->where('slug', $slug)->first();
+
+        $post = new PostShowResource($community_post);
         $posts = PostResource::collection($community->posts()->orderBy('votes', 'desc')->take(6)->get());
 
-        return Inertia::render('Frontend/Posts/Show', compact('community', 'post', 'posts'));
+        $can_update = auth()->user()->can('update', $community_post);
+        $can_delete = auth()->user()->can('delete', $community_post);
+
+        return Inertia::render('Frontend/Posts/Show', compact('community', 'post', 'posts', 'can_update', 'can_delete'));
     }
 
     public function edit($id)
