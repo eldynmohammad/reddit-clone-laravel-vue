@@ -1,4 +1,5 @@
 <script setup>
+import PostList from "@/Components/PostList.vue";
 import PostVote from "@/Components/PostVote.vue";
 import BreezeGuestLayout from "@/Layouts/Guest.vue";
 import { ArrowSmallLeftIcon, PencilIcon, TrashIcon } from "@heroicons/vue/24/solid";
@@ -15,6 +16,12 @@ const props = defineProps({
         }
     },
     post: {
+        type: Object,
+        default() {
+            return {}
+        }
+    },
+    posts: {
         type: Object,
         default() {
             return {}
@@ -126,12 +133,9 @@ const submitComment = () => {
                 </div>
             </div>
             <div class="flex-1">
-                <div class="overflow-hidden bg-white rounded-lg">
-                    <div class="px-4 py-3 text-white bg-emerald-500">
-                        <h3 class="font-bold">About community</h3>
-                    </div>
-                    <div class="p-4"></div>
-                </div>
+                <PostList :posts="props.posts.data" :community="props.community">
+                    <template #title>Popular Posts</template>
+                </PostList>
             </div>
         </div>
 

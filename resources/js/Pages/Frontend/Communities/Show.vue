@@ -1,4 +1,5 @@
 <script setup>
+import CommunityList from "@/Components/CommunityList.vue";
 import Pagination from "@/Components/Pagination.vue";
 import PostCard from "@/Components/PostCard.vue";
 import BreezeGuestLayout from "@/Layouts/Guest.vue";
@@ -13,6 +14,12 @@ const props = defineProps({
         }
     },
     posts: {
+        type: Object,
+        default() {
+            return {}
+        }
+    },
+    communities: {
         type: Object,
         default() {
             return {}
@@ -41,13 +48,18 @@ const props = defineProps({
                 <PostCard v-for="(post, index) in props.posts.data" :key="index" :post="post"
                     :community="props.community.slug" />
             </div>
-            <div class="flex-1">
+            <div class="flex-1 space-y-4">
                 <div class="rounded-lg bg-white overflow-hidden">
-                    <div class="px-4 py-3 bg-emerald-500 text-white">
+                    <div class="px-4 py-3 bg-indigo-600 text-white">
                         <h3 class="font-bold">About community</h3>
                     </div>
-                    <div class="p-4"></div>
+                    <div class="p-4">
+                        <p class="text-sm">{{ props.community.description }}</p>
+                    </div>
                 </div>
+                <CommunityList :communities="props.communities.data">
+                    <template #title>Latest Communities</template>
+                </CommunityList>
             </div>
         </div>
 

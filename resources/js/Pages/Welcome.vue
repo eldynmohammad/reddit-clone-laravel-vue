@@ -28,14 +28,9 @@ const props = defineProps({
                     :community="post.community_slug" />
             </div>
             <div class="flex-1">
-                <div class="rounded-lg bg-white overflow-hidden">
-                    <div class="px-4 py-3 bg-emerald-500 text-white">
-                        <h3 class="font-bold">Top communities</h3>
-                    </div>
-                    <div class="p-4">
-                        <CommunityList :communities="props.communities" />
-                    </div>
-                </div>
+                <CommunityList :communities="props.communities.data">
+                    <template #title>Top Communities</template>
+                </CommunityList>
             </div>
         </div>
 
