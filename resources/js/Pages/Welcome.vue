@@ -1,8 +1,7 @@
 <script setup>
-import Pagination from "@/Components/Pagination.vue";
+import CommunityList from "@/Components/CommunityList.vue";
 import PostCard from "@/Components/PostCard.vue";
 import BreezeGuestLayout from "@/Layouts/Guest.vue";
-import { Link } from "@inertiajs/inertia-vue3";
 import { defineProps } from "vue";
 
 const props = defineProps({
@@ -33,7 +32,9 @@ const props = defineProps({
                     <div class="px-4 py-3 bg-emerald-500 text-white">
                         <h3 class="font-bold">Top communities</h3>
                     </div>
-                    <div class="p-4"></div>
+                    <div class="p-4">
+                        <CommunityList :communities="props.communities" />
+                    </div>
                 </div>
             </div>
         </div>
