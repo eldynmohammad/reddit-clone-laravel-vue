@@ -74,15 +74,19 @@ const submitComment = () => {
                 <ArrowSmallLeftIcon class="w-5 h-5 text-gray-900" />
                 <span class="ml-4">r/{{ props.community.name }}</span>
                 </Link>
-                <div class="mt-4 flex bg-white rounded-lg overflow-hidden">
+                <div class="flex mt-4 overflow-hidden bg-white rounded-lg">
                     <PostVote :post="props.post.data" class="hidden md:flex bg-gray-200 p-2.5" />
                     <div class="flex-1">
-                        <div class="mt-4 px-3 flex justify-between items-center">
-                            <div class="text-xs opacity-50 flex flex-col md:flex-row gap-1">
-                                <span>Posted by</span>
-                                <span class="font-semibold max-w-[12rem] break-words">u/{{ post.data.username}}</span>
+                        <div class="flex items-center justify-between px-3 mt-4">
+                            <div class="flex flex-wrap gap-2 text-xs opacity-50">
+                                <div class="flex gap-1">
+                                    <span>Posted by</span>
+                                    <span class="font-semibold max-w-[12rem] break-words">
+                                        u/{{ post.data.username }}</span>
+                                </div>
+                                <span class="md:ml-1">{{ post.data.created_at }}</span>
                             </div>
-                            <div v-if="$page.props.auth.is_loggedin" class=" flex items-center gap-2">
+                            <div v-if="$page.props.auth.is_loggedin" class="flex items-center gap-2 ">
                                 <Link v-if="props.can_update"
                                     :href="route('communities.posts.edit', [ props.community.slug, props.post.data.slug ])"
                                     class="p-1.5 border rounded-md hover:bg-gray-100">
@@ -99,7 +103,7 @@ const submitComment = () => {
                                 <h1 class="text-xl font-semibold">{{ post.data.title }}</h1>
                                 <p class="mt-1">{{ post.data.description }}</p>
                                 <a :href="post.data.url"
-                                    class="text-xs break-words font-semibold text-indigo-500 hover:text-indigo-300">
+                                    class="text-xs font-semibold text-indigo-500 break-words hover:text-indigo-300">
                                     {{ post.data.url }}
                                 </a>
                                 <div class="mt-4 md:hidden">
@@ -114,20 +118,20 @@ const submitComment = () => {
                                         <textarea rows="4" v-model="form.content" placeholder="What are your thoughts?"
                                             class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300"></textarea>
                                     </div>
-                                    <div class="mt-2 flex justify-end">
+                                    <div class="flex justify-end mt-2">
                                         <button
-                                            class="px-4 py-2 bg-indigo-500 hover:bg-indigo-700 text-white rounded-md text-sm">Comment</button>
+                                            class="px-4 py-2 text-sm text-white bg-indigo-500 rounded-md hover:bg-indigo-700">Comment</button>
                                     </div>
                                 </form>
                             </div>
                             <div v-if="props.post.data.comments.length">
-                                <h3 class="text-lg px-4 py-3">Comments</h3>
-                                <ul role="list" class="divide-y divide-gray-200 px-4">
+                                <h3 class="px-4 py-3 text-lg">Comments</h3>
+                                <ul role="list" class="px-4 divide-y divide-gray-200">
                                     <li v-for="(comment, index) in props.post.data.comments" :key="index"
-                                        class="py-4 flex flex-col">
+                                        class="flex flex-col py-4">
                                         <div class="text-xs">
                                             <span class="opacity-60">Commented by</span>
-                                            <span class="font-semibold ml-1">{{ comment.username }}</span>
+                                            <span class="ml-1 font-semibold">{{ comment.username }}</span>
                                         </div>
                                         <p class="mt-4 text-sm">{{ comment.content }}</p>
                                     </li>

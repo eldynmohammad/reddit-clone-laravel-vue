@@ -23,17 +23,15 @@ const props = defineProps({
             <PostVote :post="props.post" class="bg-gray-200 p-2.5" />
         </div>
         <div class="p-3">
-            <div class="text-xs opacity-50 flex flex-col md:flex-row items-centar gap-2">
-                <div class="flex items-center">
-                    <span>In</span>
-                    <Link :href="route('frontend.communities.show', props.community)"
-                        class="ml-1 font-semibold hover:text-indigo-600">
-                    r/{{ props.community }}</Link>
-                </div>
-                <div class="flex md:items-center flex-col md:flex-row">
+            <div class="flex gap-2 text-xs flex-wrap items-center">
+                <Link :href="route('frontend.communities.show', props.community)"
+                    class="ml-1 font-semibold hover:text-indigo-600">
+                r/{{ props.community }}</Link>
+                <div class="flex opacity-50 items-center">
                     <span>Posted by</span>
-                    <span class="font-semibold max-w-[12rem] break-words">u/{{ post.username}}</span>
+                    <span class="md:ml-1 font-semibold max-w-[12rem] break-words">u/{{ post.username}}</span>
                 </div>
+                <span class="opacity-50 md:ml-1">{{ post.created_at }}</span>
             </div>
             <Link :href="route('frontend.communities.posts.show', [props.community, props.post.slug])"
                 class="block mt-4 text-xl font-semibold">

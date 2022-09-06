@@ -43,14 +43,14 @@ const props = defineProps({
             </div>
         </template>
 
-        <div class="flex flex-col lg:flex-row gap-6">
+        <div class="flex flex-col gap-6 lg:flex-row">
             <div class="space-y-4 lg:w-8/12">
                 <PostCard v-for="(post, index) in props.posts.data" :key="index" :post="post"
                     :community="props.community.slug" />
             </div>
             <div class="flex-1 space-y-4">
-                <div class="rounded-lg bg-white overflow-hidden">
-                    <div class="px-4 py-3 bg-indigo-600 text-white">
+                <div class="overflow-hidden bg-white rounded-lg">
+                    <div class="px-4 py-3 text-white bg-indigo-600">
                         <h3 class="font-bold">About community</h3>
                     </div>
                     <div class="p-4">
@@ -66,6 +66,5 @@ const props = defineProps({
         <div class="mt-8">
             <Pagination :links="props.posts.meta.links" />
         </div>
-        <!-- <div>{{ props.community.name }} page</div> -->
     </BreezeGuestLayout>
 </template>
